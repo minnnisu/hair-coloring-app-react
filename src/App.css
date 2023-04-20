@@ -1,0 +1,56 @@
+.App {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(249, 249, 249);
+}
+
+.wrapper {
+    width: 50%;
+    display: flex;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 5px 5px 10px rgb(212, 212, 212);
+    height: 500px;
+}
+
+.wrapper .result-img-container {
+    flex-basis: 50%;
+    text-align: center;
+}
+
+.wrapper .input-form-container {
+    flex-basis: 50%;
+    margin-left: 5%;
+}
+
+.wrapper .input-form-container .title{
+    font-weight: 500;
+    color: #343434;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+
+.wrapper .input-form-container .value{
+    width: 80%;
+}
+
+.wrapper .input-form-container .sex_container .sex_switch{
+    background-color: rgb(148, 171, 255);
+    color: #fff;
+    margin-right: 10px;
+    padding:  1px 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.wrapper .input-form-container .sex_container .sex_switch.active {
+    background-color: rgb(90, 124, 249);
+}
+
+.wrapper .input-form-container .sub_btn{
+    display: block;
+}
