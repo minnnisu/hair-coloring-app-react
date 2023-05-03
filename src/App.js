@@ -1,5 +1,6 @@
 import "./App.css";
 import { useEffect, useState } from "react";
+import Canvas from "./Canvas";
 
 function App() {
   const BASE_URL = process.env.REACT_APP_BASE_URL;
@@ -8,7 +9,9 @@ function App() {
   const [denoisingStrength, setDenoisingStrength] = useState(
     Number(1).toFixed(2)
   );
+
   const [img2imgInitImg, setImg2imgInitImg] = useState(null);
+  const [maskImg, setMaskImg] = useState(null);
   const [predictImgByImg, setPredictImgByImg] = useState(null);
 
   const selectSexHandler = function (sex) {
@@ -21,15 +24,21 @@ function App() {
 
   const submitImgHandler = async function (event) {
     event.preventDefault();
-    if (img2imgInitImg) {
+    if (img2imgInitImg && maskImg) {
       const file = img2imgInitImg[0];
+      const mask = maskImg[0];
       const base64 = await encodeFileToBase64(file);
+      const maskBase64 = await encodeFileToBase64(mask);
       const prompt =
-        selectedSex === "male" ? "a handsome man" : "a pretty girl";
+        selectedSex === "male" ? "a handsome man" : "yellow color long hair";
 
       const payload = {
         init_images: [base64],
-        prompt: `<lora:koreanDollLikeness_v15:0.7>${prompt} white background`,
+        prompt: `<lora:koreanDollLikeness_v15:1>(best quality), (high resolution), (intricate details), (photorealistic), (cinematic light) solo, blue hair, long hair, realistic, daily`,
+        negative_prompt: "long neck",
+        mask: maskBase64,
+        width: 408,
+        height: 512,
         steps: 85,
         resize_mode: 2,
         sampler_index: "DPM++ SDE Karras",
@@ -72,6 +81,11 @@ function App() {
     setImg2imgInitImg(event.target.files);
   };
 
+  const maskImgHandler = (event) => {
+    console.log(event.target.files);
+    setMaskImg(event.target.files);
+  };
+
   const encodeFileToBase64 = (image) => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -83,20 +97,17 @@ function App() {
 
   return (
     <div className="App">
-      {/* <div>
-          <button onClick={getImgByText}>텍스트 전송</button>
-          <br />
-          {predictImgByText && (
-            <img src={predictImgByText} width={500} alt="predict_img" />
-          )}
-        </div> */}
       <div className="wrapper">
         <div className="result-img-container">
-          {predictImgByImg && (
+          {predictImgByImg ? (
             <img src={predictImgByImg} width={500} alt="predict_img" />
+          ) : (
+            <Canvas />
           )}
         </div>
         <div className="input-form-container">
+          <div className="title">마스크 이미지</div>
+          <input type="file" className="value" onChange={maskImgHandler} />
           <div className="img-upload-form">
             <div className="title">이미지 업로드</div>
             <input type="file" className="value" onChange={getImgByImg} />
