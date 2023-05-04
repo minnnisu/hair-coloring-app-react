@@ -1,6 +1,6 @@
 import "./App.css";
-import { useEffect, useState } from "react";
-import Canvas from "./Canvas";
+import { useState } from "react";
+import Canvas from "./components/Canvas/Canvas";
 
 function App() {
   const BASE_URL = process.env.REACT_APP_BASE_URL;
@@ -25,26 +25,21 @@ function App() {
   const submitImgHandler = async function (event) {
     event.preventDefault();
     if (img2imgInitImg && maskImg) {
-      const file = img2imgInitImg[0];
-      const mask = maskImg[0];
-      const base64 = await encodeFileToBase64(file);
-      const maskBase64 = await encodeFileToBase64(mask);
-      const prompt =
-        selectedSex === "male" ? "a handsome man" : "yellow color long hair";
-
       const payload = {
-        init_images: [base64],
-        prompt: `<lora:koreanDollLikeness_v15:1>(best quality), (high resolution), (intricate details), (photorealistic), (cinematic light) solo, blue hair, long hair, realistic, daily`,
-        negative_prompt: "long neck",
-        mask: maskBase64,
-        width: 408,
-        height: 512,
-        steps: 85,
-        resize_mode: 2,
+        init_images: [img2imgInitImg],
+        prompt:
+          "<lora:koreanDollLikeness_v15:1>(best quality), (high resolution), (intricate details), (photorealistic), (cinematic light), no reflection solo, platinum pink hair, realistic, daily",
+        negative_prompt:
+          "Negative prompt: (nfsw), long neck, accessory, eyes, distortion",
+        mask: maskImg,
+        width: 520,
+        height: 640,
+        steps: 20,
+        resize_mode: 0,
         sampler_index: "DPM++ SDE Karras",
         restore_faces: true,
-        cfg_scale: cfgScale,
-        denoising_strength: denoisingStrength,
+        cfg_scale: 7,
+        denoising_strength: 0.75,
       };
       console.log(payload);
 
@@ -97,80 +92,81 @@ function App() {
 
   return (
     <div className="App">
-      <div className="wrapper">
-        <div className="result-img-container">
-          {predictImgByImg ? (
-            <img src={predictImgByImg} width={500} alt="predict_img" />
-          ) : (
-            <Canvas />
-          )}
+      {img2imgInitImg && <img src={img2imgInitImg} width={200} />}
+      {maskImg && <img src={maskImg} width={200} />}
+      <div className="result-img-container">
+        {predictImgByImg ? (
+          <img src={predictImgByImg} width={500} alt="predict_img" />
+        ) : (
+          <Canvas
+            onChangeInitImg={(img) => {
+              setImg2imgInitImg(img);
+            }}
+            onChangeMaskImg={(img) => setMaskImg(img)}
+          />
+        )}
+      </div>
+      <div className="input-form-container">
+        <div className="img-upload-form">
+          <div className="title">이미지 업로드</div>
+          <input type="file" className="value" onChange={getImgByImg} />
         </div>
-        <div className="input-form-container">
-          <div className="title">마스크 이미지</div>
-          <input type="file" className="value" onChange={maskImgHandler} />
-          <div className="img-upload-form">
-            <div className="title">이미지 업로드</div>
-            <input type="file" className="value" onChange={getImgByImg} />
+        <form onSubmit={submitImgHandler}>
+          <div className="sex_container">
+            <div className="title">성별 선택</div>
+            <span
+              className={`sex_switch ${selectedSex === "male" ? "active" : ""}`}
+              onClick={() => selectSexHandler("M")}
+            >
+              남자
+            </span>
+            <span
+              className={`sex_switch ${
+                selectedSex === "female" ? "active" : ""
+              }`}
+              onClick={() => selectSexHandler("F")}
+            >
+              여자
+            </span>
           </div>
-          <form onSubmit={submitImgHandler}>
-            <div className="sex_container">
-              <div className="title">성별 선택</div>
-              <span
-                className={`sex_switch ${
-                  selectedSex === "male" ? "active" : ""
-                }`}
-                onClick={() => selectSexHandler("M")}
-              >
-                남자
-              </span>
-              <span
-                className={`sex_switch ${
-                  selectedSex === "female" ? "active" : ""
-                }`}
-                onClick={() => selectSexHandler("F")}
-              >
-                여자
-              </span>
-            </div>
-            {/* <div className="title">prompt</div>
+          {/* <div className="title">prompt</div>
                 <input name="prompt" type="text" /> */}
-            <div className="title">CFG scale</div>
-            <input
-              type="range"
-              className="value"
-              min={0}
-              max={30}
-              color="gray"
-              step={0.5}
-              onChange={(event) => {
-                if (Number.isInteger(event.target.valueAsNumber)) {
-                  setCfgScale(event.target.valueAsNumber.toFixed(1));
-                } else {
-                  setCfgScale(event.target.valueAsNumber);
-                }
-              }}
-            />
-            <span>{cfgScale}</span>
-            <div className="title">Denoising Strength</div>
-            <input
-              type="range"
-              className="value"
-              min={0}
-              max={1}
-              color="gray"
-              step={0.01}
-              onChange={(event) => {
-                if (Number.isInteger(event.target.valueAsNumber)) {
-                  setDenoisingStrength(event.target.valueAsNumber.toFixed(1));
-                } else {
-                  setDenoisingStrength(event.target.valueAsNumber);
-                }
-              }}
-            />
-            <span>{denoisingStrength}</span>
-            <button className="sub_btn">subimt</button>
-          </form>
-        </div>
+          <div className="title">CFG scale</div>
+          <input
+            type="range"
+            className="value"
+            min={0}
+            max={30}
+            color="gray"
+            step={0.5}
+            onChange={(event) => {
+              if (Number.isInteger(event.target.valueAsNumber)) {
+                setCfgScale(event.target.valueAsNumber.toFixed(1));
+              } else {
+                setCfgScale(event.target.valueAsNumber);
+              }
+            }}
+          />
+          <span>{cfgScale}</span>
+          <div className="title">Denoising Strength</div>
+          <input
+            type="range"
+            className="value"
+            min={0}
+            max={1}
+            color="gray"
+            step={0.01}
+            onChange={(event) => {
+              if (Number.isInteger(event.target.valueAsNumber)) {
+                setDenoisingStrength(event.target.valueAsNumber.toFixed(1));
+              } else {
+                setDenoisingStrength(event.target.valueAsNumber);
+              }
+            }}
+          />
+          <span>{denoisingStrength}</span>
+          <button className="sub_btn">subimt</button>
+        </form>
       </div>
     </div>
   );
