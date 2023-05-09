@@ -1,0 +1,15 @@
+.switch_container {
+  margin: 10px 0;
+  display: flex;
+}
+
+.switch_item {
+  border: 1px solid;
+  margin-right: 5px;
+  padding: 2px;
+  cursor: pointer;
+}
+
+.switch_item.active {
+  color: blue;
+}

@@ -1,18 +1,17 @@
-const BASE_BACKGROUND_COLOR = "#fff";
-const PEN_COLOR = "#fff";
+import SliderBar from "../StableDiffusion/ParameterController/SliderBar";
 
-function CanvasTools({ canvas, onChangePenMode }) {
-  function changePenSize(event) {
-    canvas.context.lineWidth = event.target.valueAsNumber; // 펜 크기 조절
+function CanvasTools({ canvas, valueOfTools, onChangeValueOfTools }) {
+  function changePenSize(value) {
+    canvas.context.lineWidth = value; // 펜 크기 조절
+    onChangeValueOfTools("penSize", value);
   }
 
   function handlePenMode(type) {
     if (type === "brush") {
-      canvas.context.strokeStyle = PEN_COLOR;
-      onChangePenMode("brush");
+      canvas.context.strokeStyle = "#fff";
+      onChangeValueOfTools("penMode", "brush");
     } else if (type === "eraser") {
-      canvas.context.strokeStyle = BASE_BACKGROUND_COLOR;
-      onChangePenMode("eraser");
+      onChangeValueOfTools("penMode", "eraser");
     }
   }
 
@@ -22,15 +21,13 @@ function CanvasTools({ canvas, onChangePenMode }) {
   }
 
   return (
-    <div>
-      <input
-        type="range"
-        className="value"
+    <div className="canvas_tool_container">
+      <SliderBar
         min={0}
         max={20}
-        color="gray"
         step={1}
-        onChange={changePenSize}
+        currentValue={valueOfTools.penSize}
+        onChangeValue={changePenSize}
       />
       <button onClick={() => handlePenMode("brush")}>브러쉬</button>
       <button onClick={() => handlePenMode("eraser")}>지우개</button>

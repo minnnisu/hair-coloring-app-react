@@ -4,12 +4,16 @@ import CanvasTools from "./CanvasTools";
 
 const PEN_COLOR = "#fff";
 
-function Canvas({ onChangeInitImg, onChangeMaskImg }) {
+function Canvas({ onChangeParameters }) {
   const baseCanvasRef = useRef(null);
   const [baseCtx, setBaseCtx] = useState(null);
   const [painting, setPainting] = useState(false);
-  const [penMode, setPenMode] = useState("brush");
+  const [valueOfTools, setValueOfTools] = useState({
+    penMode: "brush",
+    penSize: 10,
+  });
   const [baseImg, setBaseImg] = useState(null);
+  const [maskImg, setMaskImg] = useState(null);
 
   const initializeCanvas = (canvasRef) => {
     if (!baseImg) return;
@@ -53,10 +57,10 @@ function Canvas({ onChangeInitImg, onChangeMaskImg }) {
 
     if (!painting) return;
 
-    if (penMode === "brush") {
+    if (valueOfTools.penMode === "brush") {
       baseCtx.lineTo(mouseX, mouseY);
       baseCtx.stroke();
-    } else if (penMode === "eraser") {
+    } else if (valueOfTools.penMode === "eraser") {
       // baseCtx.lineTo(mouseX, mouseY);
       // baseCtx.stroke();
 
@@ -86,14 +90,19 @@ function Canvas({ onChangeInitImg, onChangeMaskImg }) {
       context.fillRect(0, 0, canvas.width, canvas.height);
 
       const image = canvas.toDataURL(); //base64
-      onChangeInitImg(baseImg.src);
-      onChangeMaskImg(image);
-      // const a = document.createElement("a");
-      // a.href = image;
-      // a.download = "masked";
-      // document.body.appendChild(a);
-      // a.click();
+      onChangeParameters("initImg", baseImg.src);
+      onChangeParameters("maskImg", image);
+      setMaskImg(image);
     };
+  };
+
+  const encodeFileToBase64 = (image) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(image);
+      reader.onload = (event) => resolve(event.target.result);
+      reader.onerror = (error) => reject(error);
+    });
   };
 
   const changeBaseImage = (img) => {
@@ -109,12 +118,20 @@ function Canvas({ onChangeInitImg, onChangeMaskImg }) {
   };
 
   return (
-    // background image로 사진 보여주기
-    // 펜 색깔(흰색)
-    // 기본적으로 바탕은 검은색
     <div>
       {baseImg && (
         <div>
+          <div>
+            <div>원본 이미지</div>
+            <img src={baseImg.src} width={400} alt="원본 이미지" />
+
+            {maskImg && (
+              <div>
+                <div>마스크 이미지</div>
+                <img src={maskImg} width={400} alt="마스크 이미지" />
+              </div>
+            )}
+          </div>
           <canvas
             width={baseImg.width}
             height={baseImg.height}
@@ -124,16 +141,20 @@ function Canvas({ onChangeInitImg, onChangeMaskImg }) {
             onMouseUp={stopDrawing}
             onMouseMove={draw}
           ></canvas>
+          <CanvasTools
+            canvas={{ canvas: baseCanvasRef.current, context: baseCtx }}
+            valueOfTools={valueOfTools}
+            onChangeValueOfTools={(name, value) => {
+              setValueOfTools((prev) => ({ ...prev, [name]: value }));
+            }}
+          />
+          <button onClick={applyPaintingImage}>apply</button>
         </div>
       )}
-      <div>
-        <BaseImageHandler onChangeBaseImage={changeBaseImage} />
-        <CanvasTools
-          canvas={{ canvas: baseCanvasRef.current, context: baseCtx }}
-          onChangePenMode={(penMode) => setPenMode(penMode)}
-        />
-        <button onClick={applyPaintingImage}>apply</button>
-      </div>
+      <BaseImageHandler
+        onChangeBaseImage={changeBaseImage}
+        onChangeParameters={onChangeParameters}
+      />
     </div>
   );
 }
