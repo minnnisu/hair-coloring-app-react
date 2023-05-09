@@ -24,7 +24,7 @@ function Canvas({ onChangeParameters }) {
     context.width = baseImg.width;
     context.height = baseImg.height;
 
-    context.lineWidth = 10; // 펜 크기 조절
+    context.lineWidth = valueOfTools.penSize; // 펜 크기 조절
     context.strokeStyle = PEN_COLOR;
     context.lineCap = "round";
     context.lineJoin = "round";
@@ -96,15 +96,6 @@ function Canvas({ onChangeParameters }) {
     };
   };
 
-  const encodeFileToBase64 = (image) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(image);
-      reader.onload = (event) => resolve(event.target.result);
-      reader.onerror = (error) => reject(error);
-    });
-  };
-
   const changeBaseImage = (img) => {
     const image = new Image();
     image.src = img;
@@ -124,7 +115,6 @@ function Canvas({ onChangeParameters }) {
           <div>
             <div>원본 이미지</div>
             <img src={baseImg.src} width={400} alt="원본 이미지" />
-
             {maskImg && (
               <div>
                 <div>마스크 이미지</div>
