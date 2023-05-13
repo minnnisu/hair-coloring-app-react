@@ -1,9 +1,10 @@
-function ImageGenerator({ parameters, setPredictionImg }) {
+function ImageGenerator({ parameters, onChangePreditctionImage }) {
   const BASE_URL = process.env.REACT_APP_BASE_URL;
 
   const generateImg = async function () {
     if (parameters.initImg && parameters.maskImg) {
       const payload = {
+        include_init_images: true,
         init_images: [parameters.initImg],
         prompt: parameters.prompt,
         mask: parameters.maskImg,
@@ -11,11 +12,18 @@ function ImageGenerator({ parameters, setPredictionImg }) {
         height: parameters.height,
         cfg_scale: parameters.cfgScale,
         denoising_strength: parameters.denoisingStrength,
-        negative_prompt: "(nfsw), long neck, accessory, eyes, distortion",
+        negative_prompt:
+          "(nfsw), long neck, accessory, eyes, distortion, hand, face",
         steps: 20,
         resize_mode: 0,
         sampler_index: "DPM++ SDE Karras",
-        // mask_blur: 4,
+        inpaint_full_res: 0,
+        inpaint_full_res_padding: 32,
+        inpainting_mask_invert: 0,
+        inpainting_fill: 2,
+        restore_faces: true,
+        mask_blur: 4,
+        Model: "chilloutmix_NiPrunedFp32",
       };
       // console.log(payload);
 
@@ -29,7 +37,7 @@ function ImageGenerator({ parameters, setPredictionImg }) {
 
       const resJson = await response.json();
       console.log(resJson);
-      setPredictionImg(`data:image/png;base64,${resJson.images[0]}`);
+      onChangePreditctionImage(`data:image/png;base64,${resJson.images[0]}`);
 
       const imgInfo = await fetch(`${BASE_URL}/sdapi/v1/png-info`, {
         method: "POST",

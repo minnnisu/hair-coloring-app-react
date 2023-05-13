@@ -33,7 +33,7 @@ function ParameterController({ parameters, onChangeParameters }) {
 
   const setPrompt = (sex, isBangs, color) => {
     let prompt =
-      "<lora:koreanDollLikeness_v15:1>(best quality), (high resolution), (intricate details), (photorealistic), (cinematic light), no reflection, solo";
+      "<lora:koreanDollLikeness_v15:1>(best quality), (high resolution), (intricate details), (photorealistic), (cinematic light), (only hair), no reflection, solo";
 
     prompt += `, ${color} hair`;
 

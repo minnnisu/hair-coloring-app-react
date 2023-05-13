@@ -1,58 +1,69 @@
-function BaseImageHandler({ onChangeBaseImage, onChangeParameters }) {
+function BaseImageHandler({ onChangeCanvasData, onChangeParameters }) {
   function resizeImage(img) {
-    const canvas = document.createElement("canvas");
-    // let baseSize = 0;
+    let ratio = 1;
 
-    // if (img.width > img.height) {
-    //   if (img.width > 486) {
-    //     baseSize = 486;
-    //   } else {
-    //     baseSize = Math.floor(img.width);
-    //   }
-    // } else {
-    //   if (img.width > 400) {
-    //     baseSize = 400;
-    //   } else {
-    //     baseSize = Math.floor(img.width);
-    //   }
-    // }
+    if (img.width > img.height) {
+      if (img.width > 512) {
+        ratio = 512 / img.width;
+      }
+    } else {
+      if (img.width > 512) {
+        ratio = 512 / img.width;
+      }
+    }
 
-    // // set the canvas dimensions to the new size
-    // console.log(baseSize);
-    // const rate = (img.height / img.width).toFixed(2); // 원본이미지 비율 계산
-    // canvas.width = baseSize;
-    // canvas.height = baseSize * rate;
-    // console.log(canvas.height);
+    // width, height 모두 8의 배수로 설정
+    const resizeWidth = Math.floor((img.width * ratio) / 8) * 8;
+    const resizeHeight = Math.floor((img.height * ratio) / 8) * 8;
 
-    canvas.width = img.width;
-    canvas.height = img.height;
-
-    // draw the original image onto the canvas with the new dimensions
-    var ctx = canvas.getContext("2d");
-    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-    // onChangeParameters("width", canvas.width);
-    // onChangeParameters("height", canvas.height);
-
-    onChangeParameters("width", canvas.width);
-    onChangeParameters("height", canvas.height);
-
-    return canvas.toDataURL();
+    return { resizeWidth, resizeHeight };
   }
 
+  const generateResizedImg = (img, { resizeWidth, resizeHeight }) => {
+    // draw the original image onto the canvas with the new dimensions
+    const canvas = document.createElement("canvas");
+    canvas.width = resizeWidth;
+    canvas.height = resizeHeight;
+
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+    return canvas.toDataURL();
+  };
+
+  const changeBaseImage = (img) => {
+    const image = new Image();
+    image.src = img;
+    console.log(img);
+
+    image.onload = function () {
+      onChangeCanvasData("baseImg", image);
+      onChangeParameters("maskImg", null);
+    };
+    image.onerror = function () {
+      alert("fail to change a image");
+    };
+  };
+
   function processImage(event) {
-    if (event.target.files) {
+    if (event.target.files[0]) {
       const image = new Image();
       image.src = URL.createObjectURL(event.target.files[0]);
 
       image.onload = function () {
-        const resizedImg = resizeImage(image);
-        onChangeBaseImage(resizedImg);
+        const resize = resizeImage(image);
+        const resizedImgUrl = generateResizedImg(image, resize);
+
+        onChangeParameters("width", resize.resizeWidth);
+        onChangeParameters("height", resize.resizeHeight);
+        changeBaseImage(resizedImgUrl);
       };
+
       image.onerror = function () {
         alert("fail to load a image");
       };
     }
+    return;
   }
 
   return (

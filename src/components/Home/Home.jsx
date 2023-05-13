@@ -1,8 +1,8 @@
 import { useState } from "react";
 import Canvas from "../Canvas/Canvas";
-import ParameterController from "../StableDiffusion/ParameterController/ParameterController";
 import PredictionResult from "../StableDiffusion/PredictionResult";
-import ImageGenerator from "../StableDiffusion/ImageGenerator";
+import Controller from "./Controller";
+import ToggleBox from "./ToggleBox";
 
 function Home(params) {
   const [parameters, setParameters] = useState({
@@ -14,9 +14,20 @@ function Home(params) {
     cfgScale: 7,
     denoisingStrength: 0.75,
   });
-  console.log(parameters);
+  // console.log(parameters);
 
   const [preditionImg, setPredictionImg] = useState(null);
+  const [canvasData, setCanvasData] = useState({
+    canvasRef: null,
+    context: null,
+    tool: { penMode: "brush", penSize: 10 },
+    baseImg: null,
+  });
+  console.log(canvasData);
+
+  const onChangeCanvasData = (name, value) => {
+    setCanvasData((prev) => ({ ...prev, [name]: value }));
+  };
 
   const onChangeParameters = (name, value) => {
     setParameters((prev) => ({ ...prev, [name]: value }));
@@ -24,18 +35,22 @@ function Home(params) {
 
   return (
     <div>
+      <Controller
+        parameters={parameters}
+        canvasData={canvasData}
+        onChangeParameters={onChangeParameters}
+        onChangeCanvasData={onChangeCanvasData}
+        onChangePreditctionImage={setPredictionImg}
+      />
       <div className="wrapper">
-        <Canvas onChangeParameters={onChangeParameters} />
-        {preditionImg && <PredictionResult preditionImg={preditionImg} />}
-        <ParameterController
-          parameters={parameters}
+        <Canvas
+          canvasData={canvasData}
+          onChangeCanvasData={onChangeCanvasData}
           onChangeParameters={onChangeParameters}
         />
-        <ImageGenerator
-          parameters={parameters}
-          setPredictionImg={setPredictionImg}
-        />
+        {preditionImg && <PredictionResult preditionImg={preditionImg} />}
       </div>
+      <ToggleBox parameters={parameters} canvasData={canvasData} />
     </div>
   );
 }

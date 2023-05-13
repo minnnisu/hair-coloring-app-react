@@ -1,41 +1,34 @@
 import { useEffect, useRef, useState } from "react";
-import BaseImageHandler from "./BaseImageHandler";
-import CanvasTools from "./CanvasTools";
 
 const PEN_COLOR = "#fff";
 
-function Canvas({ onChangeParameters }) {
-  const baseCanvasRef = useRef(null);
-  const [baseCtx, setBaseCtx] = useState(null);
+function Canvas({ canvasData, onChangeCanvasData, onChangeParameters }) {
+  const canvasRef = useRef(null);
   const [painting, setPainting] = useState(false);
-  const [valueOfTools, setValueOfTools] = useState({
-    penMode: "brush",
-    penSize: 10,
-  });
-  const [baseImg, setBaseImg] = useState(null);
-  const [maskImg, setMaskImg] = useState(null);
 
-  const initializeCanvas = (canvasRef) => {
-    if (!baseImg) return;
+  const initializeCanvas = () => {
+    if (!canvasData.baseImg) return;
 
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
 
-    context.width = baseImg.width;
-    context.height = baseImg.height;
+    context.width = canvasData.baseImg.width;
+    context.height = canvasData.baseImg.height;
 
-    context.lineWidth = valueOfTools.penSize; // 펜 크기 조절
+    context.lineWidth = canvasData.tool.penSize; // 펜 크기 조절
     context.strokeStyle = PEN_COLOR;
     context.lineCap = "round";
     context.lineJoin = "round";
 
-    canvas.style.background = `url(${baseImg.src})`; // 배경이미지 변경
-    setBaseCtx(context);
+    canvas.style.background = `url(${canvasData.baseImg.src})`; // 배경이미지 변경
+    onChangeCanvasData("canvasRef", canvasRef);
+    onChangeCanvasData("context", context);
   };
 
   useEffect(() => {
-    initializeCanvas(baseCanvasRef);
-  }, [baseImg]);
+    console.log("initializeCanvas");
+    initializeCanvas();
+  }, [canvasData.baseImg?.src]);
 
   function startDrawing(e) {
     const mouseX = e.nativeEvent.offsetX;
@@ -43,8 +36,8 @@ function Canvas({ onChangeParameters }) {
 
     setPainting(true);
 
-    baseCtx.beginPath();
-    baseCtx.moveTo(mouseX, mouseY);
+    canvasData.context.beginPath();
+    canvasData.context.moveTo(mouseX, mouseY);
   }
 
   function stopDrawing() {
@@ -57,94 +50,37 @@ function Canvas({ onChangeParameters }) {
 
     if (!painting) return;
 
-    if (valueOfTools.penMode === "brush") {
-      baseCtx.lineTo(mouseX, mouseY);
-      baseCtx.stroke();
-    } else if (valueOfTools.penMode === "eraser") {
+    if (canvasData.tool.penMode === "brush") {
+      canvasData.context.lineTo(mouseX, mouseY);
+      canvasData.context.stroke();
+    } else if (canvasData.tool.penMode === "eraser") {
       // baseCtx.lineTo(mouseX, mouseY);
       // baseCtx.stroke();
 
-      baseCtx.clearRect(
-        mouseX - baseCtx.lineWidth / 2,
-        mouseY - baseCtx.lineWidth / 2,
-        baseCtx.lineWidth,
-        baseCtx.lineWidth
+      canvasData.context.clearRect(
+        mouseX - canvasData.context.lineWidth / 2,
+        mouseY - canvasData.context.lineWidth / 2,
+        canvasData.context.lineWidth,
+        canvasData.context.lineWidth
       );
     }
   }
 
-  const applyPaintingImage = () => {
-    const canvas = document.createElement("canvas");
-    canvas.width = baseCanvasRef.current.width;
-    canvas.height = baseCanvasRef.current.height;
-    const context = canvas.getContext("2d");
-
-    const mask = baseCanvasRef.current.toDataURL();
-    const maskImage = new Image();
-    maskImage.src = mask;
-
-    maskImage.onload = function () {
-      context.drawImage(maskImage, 0, 0);
-      context.globalCompositeOperation = "destination-atop";
-      context.fillStyle = "#000";
-      context.fillRect(0, 0, canvas.width, canvas.height);
-
-      const image = canvas.toDataURL(); //base64
-      onChangeParameters("initImg", baseImg.src);
-      onChangeParameters("maskImg", image);
-      setMaskImg(image);
-    };
-  };
-
-  const changeBaseImage = (img) => {
-    const image = new Image();
-    image.src = img;
-
-    image.onload = function () {
-      setBaseImg(image); // image 객체
-    };
-    image.onerror = function () {
-      alert("fail to change a image");
-    };
-  };
-
   return (
     <div>
-      {baseImg && (
+      {canvasData.baseImg && (
         <div>
-          <div>
-            <div>원본 이미지</div>
-            <img src={baseImg.src} width={400} alt="원본 이미지" />
-            {maskImg && (
-              <div>
-                <div>마스크 이미지</div>
-                <img src={maskImg} width={400} alt="마스크 이미지" />
-              </div>
-            )}
-          </div>
           <canvas
-            width={baseImg.width}
-            height={baseImg.height}
+            width={canvasData.baseImg.width}
+            height={canvasData.baseImg.height}
             id="base-canvas"
-            ref={baseCanvasRef}
+            ref={canvasRef}
             onMouseDown={startDrawing}
             onMouseUp={stopDrawing}
             onMouseMove={draw}
           ></canvas>
-          <CanvasTools
-            canvas={{ canvas: baseCanvasRef.current, context: baseCtx }}
-            valueOfTools={valueOfTools}
-            onChangeValueOfTools={(name, value) => {
-              setValueOfTools((prev) => ({ ...prev, [name]: value }));
-            }}
-          />
-          <button onClick={applyPaintingImage}>apply</button>
         </div>
       )}
-      <BaseImageHandler
-        onChangeBaseImage={changeBaseImage}
-        onChangeParameters={onChangeParameters}
-      />
     </div>
   );
 }
