@@ -1,9 +1,18 @@
-function SliderBar({ min, max, step, currentValue, onChangeValue }) {
+import "./css/SliderBar.css";
+
+function SliderBar({
+  min,
+  max,
+  step,
+  currentValue,
+  onChangeValue,
+  additionalClassName,
+}) {
   return (
-    <>
+    <div className="slider">
       <input
         type="range"
-        className="slider_bar"
+        className={`slider_bar ${additionalClassName}`}
         value={currentValue}
         min={min}
         max={max}
@@ -13,8 +22,8 @@ function SliderBar({ min, max, step, currentValue, onChangeValue }) {
           onChangeValue(event.target.valueAsNumber);
         }}
       />
-      <span>{currentValue}</span>
-    </>
+      <span className="slider_value">{currentValue}</span>
+    </div>
   );
 }
 

@@ -1,0 +1,53 @@
+.color_switch_container {
+  margin: 10px 0;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.color_switch_item {
+  margin: 0 5px 5px 0;
+  border-radius: 50%;
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  box-sizing: border-box;
+}
+
+.color_switch_item.light_blue {
+  background-color: #4242c8;
+  border: 3px solid #0000ff;
+}
+
+.color_switch_item.light_red {
+  background-color: #e63f3f;
+  border: 3px solid #ff0000;
+}
+
+.color_switch_item.sliver {
+  background-color: #e0e0e0;
+  border: 3px solid #aeaeae;
+}
+
+.color_switch_item.brown {
+  background-color: #c76f17;
+  border: 3px solid #964b00;
+}
+
+.color_switch_item.platinum_blonde {
+  background-color: #f8ebd5;
+  border: 3px solid #daceb9;
+}
+
+.color_switch_item.platinum_pink {
+  background-color: #fc8eac;
+  border: 3px solid #dc7b95;
+}
+
+.color_switch_item.platinum_purple {
+  background-color: #e43ce4;
+  border: 3px solid #c434c4;
+}
+
+.color_switch_item.active {
+  border: 3px solid #000000;
+}

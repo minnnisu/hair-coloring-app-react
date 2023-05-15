@@ -1,10 +1,9 @@
 import { useState } from "react";
-import Canvas from "../Canvas/Canvas";
-import PredictionResult from "../StableDiffusion/PredictionResult";
 import Controller from "./Controller";
-import ToggleBox from "./ToggleBox";
+import Body from "./Body";
+import "./css/Home.css";
 
-function Home(params) {
+function Home() {
   const [parameters, setParameters] = useState({
     initImg: null,
     maskImg: null,
@@ -14,16 +13,13 @@ function Home(params) {
     cfgScale: 7,
     denoisingStrength: 0.75,
   });
-  // console.log(parameters);
-
-  const [preditionImg, setPredictionImg] = useState(null);
   const [canvasData, setCanvasData] = useState({
     canvasRef: null,
     context: null,
     tool: { penMode: "brush", penSize: 10 },
     baseImg: null,
   });
-  console.log(canvasData);
+  const [preditionImg, setPredictionImg] = useState(null);
 
   const onChangeCanvasData = (name, value) => {
     setCanvasData((prev) => ({ ...prev, [name]: value }));
@@ -34,7 +30,7 @@ function Home(params) {
   };
 
   return (
-    <div>
+    <div className="home">
       <Controller
         parameters={parameters}
         canvasData={canvasData}
@@ -42,15 +38,13 @@ function Home(params) {
         onChangeCanvasData={onChangeCanvasData}
         onChangePreditctionImage={setPredictionImg}
       />
-      <div className="wrapper">
-        <Canvas
-          canvasData={canvasData}
-          onChangeCanvasData={onChangeCanvasData}
-          onChangeParameters={onChangeParameters}
-        />
-        {preditionImg && <PredictionResult preditionImg={preditionImg} />}
-      </div>
-      <ToggleBox parameters={parameters} canvasData={canvasData} />
+      <Body
+        parameters={parameters}
+        canvasData={canvasData}
+        preditionImg={preditionImg}
+        onChangeParameters={onChangeParameters}
+        onChangeCanvasData={onChangeCanvasData}
+      />
     </div>
   );
 }

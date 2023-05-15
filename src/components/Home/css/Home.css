@@ -1,0 +1,11 @@
+.home {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  width: 1400px;
+  height: 100vh;
+}
+
+.body {
+  flex-grow: 1;
+}

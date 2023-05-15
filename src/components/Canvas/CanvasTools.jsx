@@ -1,6 +1,9 @@
 import SliderBar from "../StableDiffusion/ParameterController/SliderBar";
+import Switch from "../StableDiffusion/ParameterController/Switch";
 
 function CanvasTools({ canvasData, onChangeCanvasData }) {
+  const PEN_MODE = ["brush", "eraser"];
+
   function changePenSize(value) {
     canvasData.context.lineWidth = value; // 펜 크기 조절
     onChangeCanvasData("tool", {
@@ -25,16 +28,26 @@ function CanvasTools({ canvasData, onChangeCanvasData }) {
   }
 
   return (
-    <div className="canvas_tool_container">
-      <SliderBar
-        min={0}
-        max={30}
-        step={1}
-        currentValue={canvasData.tool.penSize}
-        onChangeValue={changePenSize}
-      />
-      <button onClick={() => handlePenMode("brush")}>브러쉬</button>
-      <button onClick={() => handlePenMode("eraser")}>지우개</button>
+    <div className="canvas_tool">
+      <div className="pen-size-controller-container">
+        <div className="title">Pen Size</div>
+        <SliderBar
+          min={0}
+          max={30}
+          step={1}
+          currentValue={canvasData.tool.penSize}
+          onChangeValue={changePenSize}
+        />
+      </div>
+      <div className="pen-size-controller-container">
+        <div className="title">Pen Mode</div>
+
+        <Switch
+          items={PEN_MODE}
+          currentColor={canvasData.tool.penMode}
+          onChangeItem={handlePenMode}
+        />
+      </div>
     </div>
   );
 }

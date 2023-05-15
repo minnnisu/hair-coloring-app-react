@@ -25,7 +25,6 @@ function ImageGenerator({ parameters, onChangePreditctionImage }) {
         mask_blur: 4,
         Model: "chilloutmix_NiPrunedFp32",
       };
-      // console.log(payload);
 
       const response = await fetch(`${BASE_URL}/sdapi/v1/img2img`, {
         method: "POST",
@@ -57,8 +56,8 @@ function ImageGenerator({ parameters, onChangePreditctionImage }) {
   };
 
   return (
-    <button className="sub_btn" onClick={generateImg}>
-      subimt
+    <button className="submit_btn" onClick={generateImg}>
+      Generate Image
     </button>
   );
 }

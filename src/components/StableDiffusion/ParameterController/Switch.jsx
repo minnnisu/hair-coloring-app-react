@@ -1,4 +1,4 @@
-import "./Switch.css";
+import "./css/Switch.css";
 
 function Switch({ items, currentColor, onChangeItem }) {
   return (

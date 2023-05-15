@@ -21,7 +21,11 @@ function ApplyBtn({ canvasData, onChangeParameters }) {
     };
   };
 
-  return <button onClick={applyPaintingImage}>apply</button>;
+  return (
+    <button className="apply-btn" onClick={applyPaintingImage}>
+      apply
+    </button>
+  );
 }
 
 export default ApplyBtn;

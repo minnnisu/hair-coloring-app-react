@@ -1,0 +1,35 @@
+.controller_container {
+  padding: 10px;
+  width: 14em;
+}
+
+.controller_container .wrapper {
+  padding: 10px;
+  margin: 10px;
+  background-color: #f3f3f3;
+  border: 1px solid #e2e2e2;
+  border-radius: 10px;
+}
+
+.controller_container .title {
+  font-weight: 500;
+}
+
+.controller_container .base_img_input {
+  display: none;
+}
+
+.controller_container .base_img_input_button,
+.controller_container .submit_btn,
+.controller_container .apply-btn {
+  width: 11em;
+  background-color: #eca2ac;
+  border: 1px solid #eca2ac;
+  color: #fff;
+  padding: 7px;
+  margin: 10px 10px 10px 0;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+}

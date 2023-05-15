@@ -1,4 +1,12 @@
-function BaseImageHandler({ onChangeCanvasData, onChangeParameters }) {
+import { useRef } from "react";
+
+function BaseImageHandler({
+  onChangeCanvasData,
+  onChangeParameters,
+  onChangePreditctionImage,
+}) {
+  const BaseImageInputRef = useRef(null);
+
   function resizeImage(img) {
     let ratio = 1;
 
@@ -34,11 +42,11 @@ function BaseImageHandler({ onChangeCanvasData, onChangeParameters }) {
   const changeBaseImage = (img) => {
     const image = new Image();
     image.src = img;
-    console.log(img);
 
     image.onload = function () {
       onChangeCanvasData("baseImg", image);
       onChangeParameters("maskImg", null);
+      onChangePreditctionImage(null);
     };
     image.onerror = function () {
       alert("fail to change a image");
@@ -67,10 +75,22 @@ function BaseImageHandler({ onChangeCanvasData, onChangeParameters }) {
   }
 
   return (
-    <div>
-      <div>이미지 선택하기</div>
-      <input type="file" onChange={processImage} />
-    </div>
+    <>
+      <button
+        className="base_img_input_button"
+        onClick={() => {
+          BaseImageInputRef.current.click();
+        }}
+      >
+        Select Image
+      </button>
+      <input
+        className="base_img_input"
+        ref={BaseImageInputRef}
+        type="file"
+        onChange={processImage}
+      />
+    </>
   );
 }
 

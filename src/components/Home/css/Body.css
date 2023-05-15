@@ -1,0 +1,32 @@
+.body .canvas_and_result {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.body .canvas_and_result .prediction_result {
+  margin-left: 20px;
+}
+
+.toggle_box_container {
+  margin-top: 20px;
+}
+
+.toggle_box_container .wrapper {
+  display: flex;
+}
+
+.toggle_box_container .wrapper > * {
+  margin: 10px;
+}
+
+.toggle_box_container .wrapper .overlap_container {
+  position: relative;
+}
+
+.toggle_box_container .wrapper .overlap_container .overlap_mask_img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0.5;
+}

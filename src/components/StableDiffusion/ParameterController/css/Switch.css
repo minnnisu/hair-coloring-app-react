@@ -1,0 +1,23 @@
+.switch_container {
+  margin: 10px 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.switch_item {
+  font-family: "Roboto", sans-serif;
+  border: 1px solid #c7c7c7;
+  background-color: #f2f2f2;
+  margin: 0 5px 0 0;
+  padding: 3px;
+  cursor: pointer;
+  border-radius: 5px;
+  width: 5em;
+  text-align: center;
+}
+
+.switch_item.active {
+  background-color: #eca2ac;
+  border: 1px solid #eca2ac;
+  color: #fff;
+}
