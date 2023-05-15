@@ -1,5 +1,5 @@
 function ImageGenerator({ parameters, onChangePreditctionImage }) {
-  const BASE_URL = process.env.REACT_APP_BASE_URL;
+  const BASE_URL = process.env.REACT_APP_BASE_URL; // Stable Diffusion Webui API address
 
   const generateImg = async function () {
     if (parameters.initImg && parameters.maskImg) {
