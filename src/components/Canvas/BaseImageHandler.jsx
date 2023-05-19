@@ -82,7 +82,7 @@ function BaseImageHandler({
           BaseImageInputRef.current.click();
         }}
       >
-        Select Image
+        Upload Image
       </button>
       <input
         className="base_img_input"

@@ -10,8 +10,8 @@ function ImageGenerator({ parameters, onChangePreditctionImage }) {
         mask: parameters.maskImg,
         width: parameters.width,
         height: parameters.height,
-        cfg_scale: parameters.cfgScale,
-        denoising_strength: parameters.denoisingStrength,
+        cfg_scale: 7,
+        denoising_strength: 0.75,
         negative_prompt:
           "(nfsw), long neck, accessory, eyes, distortion, hand, face",
         steps: 20,

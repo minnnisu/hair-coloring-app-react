@@ -79,28 +79,6 @@ function ParameterController({ parameters, onChangeParameters }) {
           onChangeItem={onChangeHairColor}
         />
       </div>
-      <div className="parameter cfg_scale">
-        <div className="title">CFG scale</div>
-        <SliderBar
-          min={0}
-          max={30}
-          step={0.5}
-          currentValue={parameters.cfgScale}
-          onChangeValue={(value) => onChangeParameters("cfgScale", value)}
-        />
-      </div>
-      <div className="parameter denoising_strength">
-        <div className="title">Denoising Strength</div>
-        <SliderBar
-          min={0}
-          max={1}
-          step={0.01}
-          currentValue={parameters.denoisingStrength}
-          onChangeValue={(value) =>
-            onChangeParameters("denoisingStrength", value)
-          }
-        />
-      </div>
     </div>
   );
 }

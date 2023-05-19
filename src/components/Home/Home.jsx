@@ -10,8 +10,6 @@ function Home() {
     prompt: "male",
     width: 0,
     height: 0,
-    cfgScale: 7,
-    denoisingStrength: 0.75,
   });
   const [canvasData, setCanvasData] = useState({
     canvasRef: null,
