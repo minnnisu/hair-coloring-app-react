@@ -12,6 +12,7 @@ function Controller({
   onChangeParameters,
   onChangeCanvasData,
   onChangePreditctionImage,
+  setIsLoding,
 }) {
   return (
     <div className="controller_container">
@@ -37,11 +38,13 @@ function Controller({
       )}
       <div className="wrapper">
         <BaseImageHandler
+          setIsLoding={setIsLoding}
           onChangeCanvasData={onChangeCanvasData}
           onChangeParameters={onChangeParameters}
           onChangePreditctionImage={onChangePreditctionImage}
         />
         <ImageGenerator
+          setIsLoding={setIsLoding}
           parameters={parameters}
           onChangePreditctionImage={onChangePreditctionImage}
         />

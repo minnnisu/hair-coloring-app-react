@@ -1,4 +1,4 @@
-function ImageGenerator({ parameters, onChangePreditctionImage }) {
+function ImageGenerator({ setIsLoding, parameters, onChangePreditctionImage }) {
   const BASE_URL = process.env.REACT_APP_BASE_URL; // Stable Diffusion Webui API address
 
   const generateImg = async function () {
@@ -26,30 +26,36 @@ function ImageGenerator({ parameters, onChangePreditctionImage }) {
         Model: "chilloutmix_NiPrunedFp32",
       };
 
-      const response = await fetch(`${BASE_URL}/sdapi/v1/img2img`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ ...payload }),
-      });
+      try {
+        setIsLoding("yes");
+        const response = await fetch(`${BASE_URL}/sdapi/v1/img2img`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ ...payload }),
+        });
 
-      const resJson = await response.json();
-      console.log(resJson);
-      onChangePreditctionImage(`data:image/png;base64,${resJson.images[0]}`);
+        const resJson = await response.json();
+        console.log(resJson);
+        setIsLoding("no");
+        onChangePreditctionImage(`data:image/png;base64,${resJson.images[0]}`);
+      } catch (error) {
+        setIsLoding("fail");
+      }
 
-      const imgInfo = await fetch(`${BASE_URL}/sdapi/v1/png-info`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          image: `data:image/png;base64,${resJson.images[0]}`,
-        }),
-      });
+      // const imgInfo = await fetch(`${BASE_URL}/sdapi/v1/png-info`, {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({
+      //     image: `data:image/png;base64,${resJson.images[0]}`,
+      //   }),
+      // });
 
-      const resInfo = await imgInfo.json();
-      console.log(resInfo);
+      // const resInfo = await imgInfo.json();
+      // console.log(resInfo);
     } else {
       alert("이미지를 업로드하고 apply를 클릭 해주세요");
     }

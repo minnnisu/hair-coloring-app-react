@@ -1,6 +1,7 @@
 import { useRef } from "react";
 
 function BaseImageHandler({
+  setIsLoding,
   onChangeCanvasData,
   onChangeParameters,
   onChangePreditctionImage,
@@ -65,6 +66,7 @@ function BaseImageHandler({
         onChangeParameters("width", resize.resizeWidth);
         onChangeParameters("height", resize.resizeHeight);
         changeBaseImage(resizedImgUrl);
+        setIsLoding("no");
       };
 
       image.onerror = function () {

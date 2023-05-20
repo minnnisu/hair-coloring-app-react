@@ -4,6 +4,8 @@ import Body from "./Body";
 import "./css/Home.css";
 
 function Home() {
+  const [isLoading, setIsLoding] = useState("no");
+
   const [parameters, setParameters] = useState({
     initImg: null,
     maskImg: null,
@@ -35,8 +37,10 @@ function Home() {
         onChangeParameters={onChangeParameters}
         onChangeCanvasData={onChangeCanvasData}
         onChangePreditctionImage={setPredictionImg}
+        setIsLoding={setIsLoding}
       />
       <Body
+        isLoading={isLoading}
         parameters={parameters}
         canvasData={canvasData}
         preditionImg={preditionImg}

@@ -1,0 +1,11 @@
+.predition_img_wrapper {
+  background-color: rgb(243, 243, 243);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 20px;
+}
+
+.predition_img_wrapper .message {
+  font-size: 18px;
+}

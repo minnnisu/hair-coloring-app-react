@@ -87,24 +87,18 @@ function Canvas({ canvasData, onChangeCanvasData, onChangeParameters }) {
   }
 
   return (
-    <div>
-      {canvasData.baseImg && (
-        <div>
-          <canvas
-            width={canvasData.baseImg.width}
-            height={canvasData.baseImg.height}
-            id="base-canvas"
-            ref={canvasRef}
-            onMouseDown={(event) => startDrawing(event, "desktop")}
-            onMouseUp={(event) => stopDrawing(event, "desktop")}
-            onMouseMove={(event) => draw(event, "desktop")}
-            onTouchStart={(event) => startDrawing(event, "mobile")}
-            onTouchEnd={(event) => stopDrawing(event, "mobile")}
-            onTouchMove={(event) => draw(event, "mobile")}
-          ></canvas>
-        </div>
-      )}
-    </div>
+    <canvas
+      width={canvasData.baseImg.width}
+      height={canvasData.baseImg.height}
+      id="base-canvas"
+      ref={canvasRef}
+      onMouseDown={(event) => startDrawing(event, "desktop")}
+      onMouseUp={(event) => stopDrawing(event, "desktop")}
+      onMouseMove={(event) => draw(event, "desktop")}
+      onTouchStart={(event) => startDrawing(event, "mobile")}
+      onTouchEnd={(event) => stopDrawing(event, "mobile")}
+      onTouchMove={(event) => draw(event, "mobile")}
+    ></canvas>
   );
 }
 

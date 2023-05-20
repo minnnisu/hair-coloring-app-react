@@ -1,11 +1,11 @@
+.body .no_base_img .message {
+  font-size: 18px;
+}
+
 .body .canvas_and_result {
   width: 100%;
   display: flex;
   justify-content: center;
-}
-
-.body .canvas_and_result .prediction_result {
-  margin-left: 20px;
 }
 
 .toggle_box_container {
