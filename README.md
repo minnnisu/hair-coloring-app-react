@@ -1,70 +1,38 @@
-# Getting Started with Create React App
+## 🚀 AI 기반의 머리 염색 서비스**
+>  Stable diffusion의 inpainting 기능을 활용하여 염색된 머리 사진을 생성해주는 서비스입니다.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## ✨ 서비스 기능
 
-## Available Scripts
+### [옵션 기능]
+- 옵션을 통해 성별, 앞머리 여부, 머리 색상을 선택할 수 있습니다.
 
-In the project directory, you can run:
+| <img src="https://github.com/user-attachments/assets/c2b90d9d-2165-4182-b059-d6207b949800" width="160"/> |
+| --- |
+| 옵션 |
 
-### `npm start`
+### [마스킹 기능]
+- 캔버스를 염색 할 영역을 마스킹할 수 있습니다.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+| <img src="https://github.com/user-attachments/assets/817bf3ab-b5ad-44e0-89dc-1023373b1b42" width="160"/> | <img src="https://github.com/user-attachments/assets/d180060a-90d8-43ad-a6fd-96b350c982d4" width="360"/> |
+| --- | --- |
+| 캔버스 | 마스킹 |
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
 
-### `npm test`
+### [염색 기능]
+- 마스킹 된 영역을 Stable diffusion 모델을 통해 선택된 옵션을 참고하여 염색된 이미지를 생성합니다.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+| <img width="300" src="https://github.com/user-attachments/assets/3e76c198-de40-4996-b466-309d3fd51c00" /> | <img width="300" src="https://github.com/user-attachments/assets/537ba5dc-38a9-4043-8614-522f90b6a905" /> |
+| --- | --- |
+| 마스킹 된 영역 | 염색된 이미지 | 
 
-### `npm run build`
+</br>
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## ⚒️ 기술 스택
+`React`, `Stable Diffustion`, `Javascript`
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+</br>
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 데모 영상
 
-### `npm run eject`
+https://github.com/user-attachments/assets/980c47bf-0bf1-4ac8-a7c4-dec25fbd457e
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
